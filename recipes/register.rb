@@ -32,9 +32,13 @@ if node['platform'] == 'redhat'
 
   # If system is currently unregistered, register it.
   compile_time do
-    execute 'register instance with redhat.com' do
+    e = execute 'register instance with redhat.com' do
       command "subscription-manager register --username #{rhsm_username} --password #{rhsm_password} --auto-attach"
       not_if 'subscription-manager identity'
+    end
+
+    execute "subscription-manager repos --disable=\"*\"" do
+      only_if { e.updated_by_last_action?}
     end
   end
 
