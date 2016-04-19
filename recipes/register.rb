@@ -21,10 +21,12 @@ if node['platform'] == 'redhat'
 
   include_recipe 'chef-sugar::default'
 
-  rhsm_username = node['rhsm']['username']
-  rhsm_password = node['rhsm']['password']
+  rhsm_db_item = data_bag_item(node['rhsm']['data_bag'], node['rhsm']['data_bag_item'])['rhsm'] || {} rescue {}
 
-  additional_repos = node['rhsm']['additional_repos']
+  rhsm_username = rhsm_db_item['username'] || node['rhsm']['username']
+  rhsm_password = rhsm_db_item['password'] || node['rhsm']['password']
+
+  additional_repos = rhsm_db_item['additional_repos'] || node['rhsm']['additional_repos']
 
   unless rhsm_username && rhsm_password
     raise 'rhsm/username and rhsm/password attributes should be set'

@@ -25,3 +25,6 @@ default['rhsm']['password'] = nil
 
 # Additional repos to enable
 default['rhsm']['additional_repos'] = []
+
+default['rhsm']['data_bag'] = 'rhsm'
+default['rhsm']['data_bag_item'] = 'default'
